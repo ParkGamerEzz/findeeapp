@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -10,27 +11,28 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8000/api/v2/login`, { username, password });
+      const response = await axios.post('https://api.pgteamsite.tech/api/v2/login', { username, password });
       const { success, message, data } = response.data;
       // console.log(response.data)
       if (success) {
         toast.success('เข้าสู่ระบบสำเร็จ', 'LOGIN AUTH');
-        // setTimeout(() => {
-        //   window.location.href = 'index.php';
-        // }, 1500);
+        setTimeout(() => {
+          window.location.href = '../home';
+        }, 1500);
 
         // Assuming you handle session logic in your backend and this will set cookies or similar
         sessionStorage.setItem('username', data.username);
         sessionStorage.setItem('pfp', data.pfp);
-        sessionStorage.setItem('id_no', data.id_no);
+        sessionStorage.setItem('id_no', data.id);
         sessionStorage.setItem('logged_in', true);
       } else {
         toast.error(message || 'เลข ID หรือ รหัสผ่านไม่ถูกต้อง', 'LOGIN AUTH');
       }
     } catch (error) {
-      toast.error('เกิดข้อผิดพลาด || API OFFLINE')
+      toast.error('เกิดข้อผิดพลาด || API OFFLINE');
     }
   };
+
 
   return (
     <div >
@@ -117,7 +119,8 @@ const styles = `
 
 html, body {
   min-height: 100%;
-  color: #fff;
+  color: #FFFFFF;
+  background: #000000;
   
 
   font-family: monospace, serif;
@@ -125,6 +128,7 @@ html, body {
 }
 
 h1 {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif,Arial, Helvetica, sans-serif;
   font-size: 23px;
 }
 
